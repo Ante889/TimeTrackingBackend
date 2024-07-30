@@ -1,22 +1,26 @@
-using Microsoft.EntityFrameworkCore;
+using dotenv.net;
 using TimeTracking.App.Base;
 
 var builder = WebApplication.CreateBuilder(args);
-//Configuration for EF Core and SQL Server
-builder.Services.AddDbContext<TimeTrackingContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services to the container.
+DotEnv.Load();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.ConfigureSqlContext(connectionString);
+
+var secretKey = DotEnv.Read()["JWT_SECRET_KEY"];
+builder.Services.ConfigureJWT(secretKey);
+
+builder.Services.ConfigureSwagger();
+
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(Program).Assembly)
     .AddControllersAsServices();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -25,6 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
