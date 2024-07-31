@@ -12,8 +12,8 @@ using TimeTracking.App.Base;
 namespace TimeTracking.Migrations
 {
     [DbContext(typeof(TimeTrackingContext))]
-    [Migration("20240728210042_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240731125956_migrationFirst")]
+    partial class migrationFirst
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,8 +110,8 @@ namespace TimeTracking.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(18)
-                        .HasColumnType("nvarchar(18)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TimeTracking.App.Program.Domain.Entity
+namespace TimeTracking.App.Person.Domain.Entity
 {
     [Table("person")]
     public class PersonEntity
@@ -22,7 +22,7 @@ namespace TimeTracking.App.Program.Domain.Entity
         public required string Email { get; set; }
 
         [Required]
-        [MaxLength(18)]
+        [MaxLength(255)]
         public required string Password { get; set; }
 
         [MaxLength(20)]

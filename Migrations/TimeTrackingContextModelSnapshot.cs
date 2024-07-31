@@ -107,8 +107,8 @@ namespace TimeTracking.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(18)
-                        .HasColumnType("nvarchar(18)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 

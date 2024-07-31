@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,21 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+    <PackageReference Include="dotenv.net" Version="3.2.0" />
+    <PackageReference Include="MediatR" Version="12.4.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="App\Category\Application\Controllers\" />
     <Folder Include="App\Category\Infrastructure\" />
-    <Folder Include="App\Person\Application\" />
-    <Folder Include="App\Person\Infrastructure\" />
     <Folder Include="App\Phase\Application\Controllers\" />
     <Folder Include="App\Phase\Infrastructure\" />
+    <Folder Include="App\Project\Application\Controllers\" />
     <Folder Include="App\Project\Infrastructure\" />
     <Folder Include="App\Time\Application\Controllers\" />
     <Folder Include="App\Time\Infrastructure\" />

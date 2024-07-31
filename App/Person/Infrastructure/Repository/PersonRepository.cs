@@ -1,14 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracking.App.Person.Domain.Interface;
-using TimeTracking.App.Program.Domain.Entity;
+using TimeTracking.App.Person.Domain.Entity;
+using TimeTracking.App.Base;
+using TimeTracking.App.Person.Application.Controllers;
 
 namespace TimeTracking.App.Person.Infrastructure.Repository;
 public class PersonRepository : PersonRepositoryInterface
 {
-    private readonly DbContext _context;
+    private readonly TimeTrackingContext _context;
     private readonly DbSet<PersonEntity> _persons;
 
-    public PersonRepository(DbContext context)
+    public PersonRepository(TimeTrackingContext context)
     {
         _context = context;
         _persons = _context.Set<PersonEntity>();
@@ -22,6 +24,11 @@ public class PersonRepository : PersonRepositoryInterface
     public async Task<PersonEntity?> GetByIdAsync(int id)
     {
         return await _persons.FindAsync(id);
+    }
+
+    public async Task<PersonEntity?> GetByEmailAsync(string? email)
+    {
+        return await _persons.FirstOrDefaultAsync(person => person.Email == email);
     }
 
     public async Task AddAsync(PersonEntity person)

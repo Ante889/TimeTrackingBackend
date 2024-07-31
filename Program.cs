@@ -1,5 +1,8 @@
+using System.Reflection;
 using dotenv.net;
+using MediatR;
 using TimeTracking.App.Base;
+using TimeTracking.App.Person;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +14,11 @@ builder.Services.ConfigureSqlContext(connectionString);
 var secretKey = DotEnv.Read()["JWT_SECRET_KEY"];
 builder.Services.ConfigureJWT(secretKey);
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
 builder.Services.ConfigureSwagger();
+
+builder.Services.AddPersonServices();
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(Program).Assembly)

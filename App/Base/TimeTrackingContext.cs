@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracking.App.Category.Domain.Entity;
 using TimeTracking.App.Phase.Domain.Entity;
-using TimeTracking.App.Program.Domain.Entity;
+using TimeTracking.App.Person.Domain.Entity;
 using TimeTracking.App.Project.Domain.Entity;
 using TimeTracking.App.Time.Domain.Entity;
 
