@@ -1,9 +1,6 @@
 ﻿using TimeTracking.App.Person.Domain.Entity;
 using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 using TimeTracking.App.Person.Domain.Interface;
-using TimeTracking.App.Person.Infrastructure.Repository;
 
 namespace TimeTracking.App.Person.Application.Query
 {

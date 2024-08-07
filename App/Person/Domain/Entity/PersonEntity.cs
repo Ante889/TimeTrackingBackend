@@ -10,22 +10,23 @@ namespace TimeTracking.App.Person.Domain.Entity
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(255)]
+        [StringLength(255, MinimumLength = 1)]
         public required string FirstName { get; set; }
 
         [Required]
-        [MaxLength(255)]
+        [StringLength(255, MinimumLength = 1)]
         public required string LastName { get; set; }
 
         [Required]
-        [MaxLength(255)]
+        [StringLength(255, MinimumLength = 1)]
+        [EmailAddress]
         public required string Email { get; set; }
 
         [Required]
-        [MaxLength(255)]
+        [StringLength(255, MinimumLength = 1)]
         public required string Password { get; set; }
 
-        [MaxLength(20)]
+        [StringLength(20)]
         public string? Language { get; set; }
     }
 }
