@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TimeTracking.App.Person.Domain.Entity;
+﻿using TimeTracking.App.Person.Domain.Entity;
 
 namespace TimeTracking.App.Person.Domain.Interface
 {
