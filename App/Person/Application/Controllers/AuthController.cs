@@ -3,6 +3,7 @@ using TimeTracking.App.Person.Domain.Interface;
 using TimeTracking.App.Person.Application.Query;
 using MediatR;
 using TimeTracking.App.Person.Infrastructure.Service;
+using TimeTracking.App.Person.Domain.Model;
 
 namespace TimeTracking.App.Person.Application.Controllers;
 
@@ -28,21 +29,21 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
     {
-        var query = new FindPersonByEmailQuery(loginModel.Email);
-        var person = await _mediator.Send(query);
+        var person = await _mediator.Send(new FindPersonByEmailQuery(loginModel.Email));
 
-        if (person == null || !BCrypt.Net.BCrypt.Verify(loginModel.Password, person.Password))
+        try
         {
-            return Unauthorized("Email or password are not correct.");
+            if (person == null || !BCrypt.Net.BCrypt.Verify(loginModel.Password, person.Password))
+            {
+                return Unauthorized("Email or password are not correct.");
+            }
+        }
+        catch (BCrypt.Net.SaltParseException)
+        {
+            return Unauthorized("An error occurred while processing your password. Please try again later.");
         }
 
         var token = _jwtTokenService.GetToken(person);
         return Ok(new { Token = token });
     }
-}
-
-public class LoginModel
-{
-    public string Email { get; set; }
-    public string Password { get; set; }
 }

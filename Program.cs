@@ -3,6 +3,10 @@ using dotenv.net;
 using MediatR;
 using TimeTracking.App.Base;
 using TimeTracking.App.Person;
+using TimeTracking.App.Project;
+using TimeTracking.App.Time;
+using TimeTracking.App.Category;
+using TimeTracking.App.Phase;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +23,10 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.G
 builder.Services.ConfigureSwagger();
 
 builder.Services.AddPersonServices();
+builder.Services.AddProjectServices();
+builder.Services.AddTimeServices();
+builder.Services.AddCategoryServices();
+builder.Services.AddPhaseServices();
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(Program).Assembly)

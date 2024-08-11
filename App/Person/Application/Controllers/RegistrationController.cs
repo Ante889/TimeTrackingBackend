@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TimeTracking.App.Person.Domain.Interface;
-using TimeTracking.App.Person.Application.Query;
 using MediatR;
 using TimeTracking.App.Person.Infrastructure.Service;
 using TimeTracking.App.Person.Application.Command;
 using TimeTracking.App.Person.Domain.Model;
+using TimeTracking.App.Person.Application.Query;
 
 namespace TimeTracking.App.Person.Application.Controllers;
 
@@ -30,31 +30,25 @@ public class RegistrationController : ControllerBase
     [HttpPost("registration")]
     public async Task<IActionResult> Register([FromBody] RegisterModel registerModel)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
         if (registerModel.Password != registerModel.ConfirmPassword) return BadRequest("Passwords do not match");
 
-        var person = await _mediator.Send(
-            new RegisterCommand(
-               registerModel.Email,
-               registerModel.Password,
-               registerModel.FirstName,
-               registerModel.LastName
-            )
-        );
+        var existingPerson = await _mediator.Send(new FindPersonByEmailQuery(registerModel.Email));
+        if (existingPerson != null) return BadRequest("Email already in use");
+
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerModel.Password);
+
+        var person = await _mediator.Send(new RegisterCommand(
+            registerModel.Email,
+            hashedPassword,
+            registerModel.FirstName,
+            registerModel.LastName
+        ));
 
         var token = _jwtTokenService.GetToken(person);
 
-        return Ok(
-            new { 
-                Token = token,
-                FirstName = person.FirstName,
-                LastName = person.LastName
-            }
-        );
+        return Ok(new { Token = token, FirstName = person.FirstName, LastName = person.LastName });
     }
 }
 
