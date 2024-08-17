@@ -23,6 +23,12 @@ namespace TimeTracking.App.Phase.Infrastructure.Repository
             return await _phases.FindAsync(id);
         }
 
+        public async Task<int> CountAllOnProject(ProjectEntity project)
+        {
+
+            return await _phases.CountAsync(p => p.Project == project.Id);
+        }
+
         public async Task<IEnumerable<PhaseEntity>> GetByProjectAsync(ProjectEntity project)
         {
             return await _phases

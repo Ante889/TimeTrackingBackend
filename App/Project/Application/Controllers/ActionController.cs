@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using TimeTracking.App.Person.Domain.Interface;
 using MediatR;
 using TimeTracking.App.Project.Application.Query;
 using TimeTracking.App.Person.Application.Query;
