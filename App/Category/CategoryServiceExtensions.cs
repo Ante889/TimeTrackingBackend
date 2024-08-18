@@ -1,4 +1,5 @@
-﻿using TimeTracking.App.Category.Domain.Interface;
+﻿using TimeTracking.App.Base.Controllers;
+using TimeTracking.App.Category.Domain.Interface;
 using TimeTracking.App.Category.Infrastructure.Repository;
 
 namespace TimeTracking.App.Category

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TimeTracking.App.Base.Controllers;
 using TimeTracking.App.Person.Domain.Interface;
 using TimeTracking.App.Person.Infrastructure.Repository;
 using TimeTracking.App.Person.Infrastructure.Service;
@@ -11,6 +12,7 @@ namespace TimeTracking.App.Person
         {
             services.AddScoped<PersonRepositoryInterface, PersonRepository>();
             services.AddSingleton<JwtTokenService>();
+            services.AddScoped<SafeExecutorInterface, SafeExecutor>();
         }
     }
 }

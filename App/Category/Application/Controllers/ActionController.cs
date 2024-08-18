@@ -2,13 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using MediatR;
 using TimeTracking.App.Phase.Application.Query;
-using TimeTracking.App.Project.Application.Query;
-using TimeTracking.App.Phase.Application.Command;
-using TimeTracking.App.Phase.Domain.Model;
-using TimeTracking.App.Project.Domain.Model;
 using TimeTracking.App.Category.Domain.Model;
+using TimeTracking.App.Category.Application.Query;
+using TimeTracking.App.Category.Application.Command;
+using TimeTracking.App.Base.Controllers;
 
-namespace TimeTracking.App.Phase.Application.Controllers
+namespace TimeTracking.App.Category.Application.Controllers
 {
     [ApiController]
     [Authorize]
@@ -16,73 +15,94 @@ namespace TimeTracking.App.Phase.Application.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly SafeExecutorInterface _safeExecutor;
 
         public CategoryController(
-            IMediator mediator
+            IMediator mediator,
+            SafeExecutorInterface safeExecutor 
         )
         {
             _mediator = mediator;
+            _safeExecutor = safeExecutor;
         }
 
         [HttpGet("category/{categoryId}")]
-        public async Task<IActionResult> GetCategoryById(int categoryId)
+        public Task<IActionResult> GetCategoryById(int categoryId)
         {
-            var category = await _mediator.Send(new FindCategoryByIdQuery(categoryId));
+            return _safeExecutor.ExecuteSafe(async () =>
+            {
+                var category = await _mediator.Send(new FindCategoryByIdQuery(categoryId));
 
-            if (category == null) return NotFound("No category found with the given ID.");
+                if (category == null) return NotFound("No category found with the given ID.");
 
-            return Ok(category);
+                return Ok(category);
+            });
         }
 
-        [HttpGet("category/{phaseId}")]
-        public async Task<IActionResult> GetCategoriesByPhaseId(string phaseId)
+        [HttpGet("categories/{phaseId}")]
+        public Task<IActionResult> GetCategoriesByPhaseId(string phaseId)
         {
-            var phase = await _mediator.Send(new FindPhaseByIdQuery(int.Parse(phaseId)));
-            if (phase == null) return NotFound("No phase found for the given ID.");
+            return _safeExecutor.ExecuteSafe(async () =>
+            {
+                var phase = await _mediator.Send(new FindPhaseByIdQuery(int.Parse(phaseId)));
+                if (phase == null) return NotFound("No phase found for the given ID.");
 
-            var categories = await _mediator.Send(new FindCategoriesByPhaseQuery(phase));
-            if (categories == null || !categories.Any()) return NotFound("No categories found for the given phase.");
+                var categories = await _mediator.Send(new FindCategoriesByPhaseQuery(phase));
+                if (categories == null || !categories.Any()) return NotFound("No categories found for the given phase.");
 
-            return Ok(categories);
+                return Ok(categories);
+            });
         }
 
-        [HttpPost("cateroy")]
-        public async Task<IActionResult> CreatePhase([FromBody] CategoryModel formModel)
+        [HttpPost("category")]
+        public Task<IActionResult> CreateCategory([FromBody] CategoryModel formModel)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return _safeExecutor.ExecuteSafe(async () =>
+            {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var category = await _mediator.Send(new FindPhaseByIdQuery(formModel.Phase));
-            if (category == null) return NotFound("No category found for the given ID.");
+                var phase = await _mediator.Send(new FindPhaseByIdQuery(formModel.Phase));
+                if (phase == null) return NotFound("No phase found for the given ID.");
 
-            var category = await _mediator.Send(new CreateCommand(
-                
-            ));
+                var category = await _mediator.Send(new CreateCommand(
+                    phase,
+                    formModel.Name,
+                    formModel.PricePerHour
+                ));
 
-            if (category == null) return BadRequest("Failed to create the category.");
+                if (category == null) return BadRequest("Failed to create the category.");
 
-            return CreatedAtAction(nameof(GetCategoryById), new { CategoryId = category.Id }, category);
+                return CreatedAtAction(nameof(GetCategoryById), new { CategoryId = category.Id }, category);
+            });
         }
 
         [HttpPut("category/{categoryId}")]
-        public async Task<IActionResult> UpdateCategory(int categoryId, [FromBody] CategoryUpdateModel formModel)
+        public Task<IActionResult> UpdateCategory(int categoryId, [FromBody] CategoryUpdateModel formModel)
         {
-            var updateCategory = await _mediator.Send(new UpdateCommand(
-         
-            ));
+            return _safeExecutor.ExecuteSafe(async () =>
+            {
+                var updateCategory = await _mediator.Send(new UpdateCommand(
+                    categoryId,
+                    formModel.Name,
+                    formModel.PricePerHour
+                ));
 
-            if (updateCategory == null) return NotFound("Category not found or update failed.");
+                if (updateCategory == null) return NotFound("Category not found or update failed.");
 
-            return Ok(updateCategory);
+                return Ok(updateCategory);
+            });
         }
 
-
-        [HttpDelete("phases/{phaseId}")]
-        public async Task<IActionResult> DeleteProject(int projectId)
+        [HttpDelete("category/{categoryId}")]
+        public Task<IActionResult> DeleteCategory(int categoryId)
         {
-            var result = await _mediator.Send(new DeleteCommand(projectId));
-            if (!result) return NotFound("Phase not found or delete failed.");
+            return _safeExecutor.ExecuteSafe(async () =>
+            {
+                var result = await _mediator.Send(new DeleteCommand(categoryId));
+                if (!result) return NotFound("Category not found or delete failed.");
 
-            return NoContent();
+                return NoContent();
+            });
         }
     }
 }
