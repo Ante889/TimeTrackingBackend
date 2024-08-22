@@ -11,7 +11,7 @@ namespace TimeTracking.App.Category.Application.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api/")]
+    [Route("api/v1/")]
     public class CategoryController : ControllerBase
     {
         private readonly IMediator _mediator;

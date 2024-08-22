@@ -21,14 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="App\Category\Application\Controllers\" />
-    <Folder Include="App\Category\Infrastructure\" />
     <Folder Include="App\Phase\Application\Controllers\" />
-    <Folder Include="App\Phase\Infrastructure\" />
-    <Folder Include="App\Project\Application\Controllers\" />
-    <Folder Include="App\Project\Infrastructure\" />
-    <Folder Include="App\Time\Application\Controllers\" />
-    <Folder Include="App\Time\Infrastructure\" />
   </ItemGroup>
 
 </Project>

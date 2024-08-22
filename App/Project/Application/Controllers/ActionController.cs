@@ -11,7 +11,7 @@ namespace TimeTracking.App.Project.Application.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api/")]
+    [Route("api/v1/")]
     public class ProjectController : ControllerBase
     {
         private readonly IMediator _mediator;

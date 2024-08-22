@@ -9,7 +9,7 @@ using TimeTracking.App.Base.Controllers;
 namespace TimeTracking.App.Person.Application.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/")]
 public class AuthController : ControllerBase
 {
     private readonly PersonRepositoryInterface _personRepository;
