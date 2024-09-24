@@ -1,0 +1,1 @@
+export const BACKEND_URL = 'https://antefilipovic-001-site1.ftempurl.com/api/v1';

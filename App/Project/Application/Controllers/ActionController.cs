@@ -48,7 +48,6 @@ namespace TimeTracking.App.Project.Application.Controllers
                 if (person == null) return NotFound("No person found for the given ID.");
 
                 var projects = await _mediator.Send(new FindProjectByUserQuery(person));
-                if (projects == null || !projects.Any()) return NotFound("No projects found for the given user.");
 
                 return Ok(projects);
             });

@@ -43,7 +43,12 @@ public class AuthController : ControllerBase
             }
 
             var token = _jwtTokenService.GetToken(person);
-            return Ok(new { Token = token });
+            return Ok(new {
+                Token = token, 
+                firstName = person.FirstName,
+                lastName = person.LastName, 
+                id = person.Id
+            });
         });
     }
 }
