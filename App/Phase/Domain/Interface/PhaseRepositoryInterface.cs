@@ -6,7 +6,7 @@ namespace TimeTracking.App.Phase.Domain.Interface
     public interface PhaseRepositoryInterface
     {
         Task<PhaseEntity?> GetByIdAsync(int id);
-        Task<IEnumerable<PhaseEntity>> GetByProjectAsync(ProjectEntity project);
+        Task<IEnumerable<object>> GetByProjectAsync(ProjectEntity project);
         Task AddAsync(PhaseEntity phase);
         Task UpdateAsync(PhaseEntity phase);
 

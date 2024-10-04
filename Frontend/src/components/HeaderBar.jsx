@@ -12,6 +12,7 @@ const HeaderBar = () => {
   } = theme.useToken();
 
   const token = localStorage.getItem('token');
+  const userName = localStorage.getItem('userFullName');
 
   const handleLogout = () => {
     logoutUser(navigate);
@@ -27,7 +28,7 @@ const HeaderBar = () => {
         alignItems: 'center',
       }}
     >
-      <h1 style={{ fontSize: '24px' }}>Time tracking application</h1>
+      <h1 style={{ fontSize: '24px' }}>Time tracking application - {userName}</h1>
       {token && (
         <Button type="primary" danger style={{ marginLeft: 'auto' }} onClick={handleLogout}>
           Logout

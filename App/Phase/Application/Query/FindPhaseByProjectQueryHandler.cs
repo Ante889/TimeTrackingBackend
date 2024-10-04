@@ -4,7 +4,7 @@ using TimeTracking.App.Phase.Domain.Interface;
 
 namespace TimeTracking.App.Phase.Application.Query
 {
-    public class FindPhaseByProjectQueryHandler : IRequestHandler<FindPhaseByProjectQuery, IEnumerable<PhaseEntity>>
+    public class FindPhaseByProjectQueryHandler : IRequestHandler<FindPhaseByProjectQuery, IEnumerable<Object>>
     {
         private readonly PhaseRepositoryInterface _phaseRepository;
 
@@ -13,7 +13,7 @@ namespace TimeTracking.App.Phase.Application.Query
             _phaseRepository = phaseRepository;
         }
 
-        public async Task<IEnumerable<PhaseEntity>> Handle(FindPhaseByProjectQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Object>> Handle(FindPhaseByProjectQuery request, CancellationToken cancellationToken)
         {
             return await _phaseRepository.GetByProjectAsync(request.Project);          
         }

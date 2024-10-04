@@ -3,6 +3,8 @@ using TimeTracking.App.Phase.Domain.Entity;
 using TimeTracking.App.Base;
 using TimeTracking.App.Phase.Domain.Interface;
 using TimeTracking.App.Project.Domain.Entity;
+using TimeTracking.App.Category.Domain.Entity;
+using TimeTracking.App.Time.Domain.Entity;
 
 namespace TimeTracking.App.Phase.Infrastructure.Repository
 {
@@ -29,12 +31,40 @@ namespace TimeTracking.App.Phase.Infrastructure.Repository
             return await _phases.CountAsync(p => p.Project == project.Id);
         }
 
-        public async Task<IEnumerable<PhaseEntity>> GetByProjectAsync(ProjectEntity project)
+        public async Task<IEnumerable<object>> GetByProjectAsync(ProjectEntity project)
         {
-            return await _phases
-                .Where(p => p.Project == project.Id)
-                .ToListAsync();
+            return await (from phase in _phases
+                          where phase.Project == project.Id
+                          join category in _context.Set<CategoryEntity>() on phase.Id equals category.Phase into categoryGroup
+                          from category in categoryGroup.DefaultIfEmpty()
+                          join time in _context.Set<TimeEntity>() on category.Id equals time.Category into timeGroup
+                          from time in timeGroup.DefaultIfEmpty()
+                          group new { time, category } by new
+                          {
+                              phase.Id,
+                              phase.Project,
+                              phase.DateCreated,
+                              phase.Description,
+                              phase.PhaseNumber,
+                              phase.AmountPaid,
+                              category.PricePerHour
+                          } into phaseGroup
+                          select new
+                          {
+                              phaseGroup.Key.Id,
+                              phaseGroup.Key.Project,
+                              phaseGroup.Key.DateCreated,
+                              phaseGroup.Key.Description,
+                              phaseGroup.Key.PhaseNumber,
+                              phaseGroup.Key.AmountPaid,
+                              TotalTimeInMinutes = phaseGroup.Sum(t => t.time != null ? t.time.TimeInMinutes : 0),
+                              TotalCost = (phaseGroup.Sum(t => t.time != null ? t.time.TimeInMinutes : 0) / 60.0m) * (phaseGroup.Key.PricePerHour ?? 0)
+                          })
+                          .OrderBy(result => result.Id)
+                          .ToListAsync();
         }
+
+
 
         public async Task AddAsync(PhaseEntity phase)
         {

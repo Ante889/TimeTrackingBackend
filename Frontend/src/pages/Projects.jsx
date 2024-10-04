@@ -4,6 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { getProjectsByUserId, createProject, updateProject, deleteProject } from '../service/projectService';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { useNavigate } from 'react-router-dom'; 
 
 const { Content } = Layout;
 
@@ -17,6 +18,7 @@ const Projects = () => {
   const [form] = Form.useForm();
 
   const userId = localStorage.getItem('userId');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProjects();
@@ -97,7 +99,11 @@ const Projects = () => {
                     style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}
                   >
                     <p>{project.description.length > 150 ? `${project.description.slice(0, 150)}...` : project.description}</p>
-                    <Button type="default" style={{ width: '100%', marginBottom: '10px' }} onClick={() => {/* Logika za prikaz faza */}}>
+                    <Button
+                      type="default"
+                      style={{ width: '100%', marginBottom: '10px' }}
+                      onClick={() => navigate(`/project-detail/${project.id}`)}
+                    >
                       Choice project
                     </Button>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
