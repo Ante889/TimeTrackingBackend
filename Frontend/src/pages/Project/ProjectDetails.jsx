@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPhasesByProjectId, createPhase, updatePhase, deletePhase } from '../../service/phaseService';
+import { getPhasesByProjectId, createPhase, updatePhase, deletePhase, exportPhase } from '../../service/phaseService';
 import { Card, Layout, Row, Col, Spin, Badge, Button, Modal, Form, Input, message, Collapse } from 'antd';
 import ConfirmDeleteModal from '../../components/ConfirmDeleteModal';
 import Breadcrumbs from '../../components/Breadcrumbs';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, ExportOutlined } from '@ant-design/icons';
 
 const { Content } = Layout;
 const { Panel } = Collapse;
@@ -81,6 +81,22 @@ const ProjectDetail = () => {
     }
   };
 
+  const handleExportPhase = async (phaseId) => {
+    try {
+      const blob = await exportPhase(phaseId, navigate);
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'PhaseDocument.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      message.success('Phase exported successfully!');
+    } catch (error) {
+      message.error('Failed to export phase.');
+    }
+  };
+
   return (
     <Layout style={{ margin: '0 16px' }}>
       <Breadcrumbs items={[{ label: 'Projects', route: '/projects' }, { label: 'Phase', route: '/project-detail/' + projectId }]} />
@@ -115,9 +131,13 @@ const ProjectDetail = () => {
                             <Badge count={`$${phase.totalCost - phase.amountPaid}`} style={{ backgroundColor: 'green' }} />
                           )
                         }
+                
                       </div>
                     }
                   >
+                            <Button type="primary" icon={<ExportOutlined />} onClick={() => handleExportPhase(phase.id)} style={{ marginTop: '20px', marginBottom: '20px' }}>
+                          Export
+                        </Button>
                     <Collapse>
                       <Panel header="More Info" key="1">
                         <p>{phase.description}</p>

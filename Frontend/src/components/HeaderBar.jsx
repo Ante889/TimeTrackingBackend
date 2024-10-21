@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, Button, theme } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '../service/authService';
+import { getCookieToken } from '../service/cookieService';
 
 const { Header } = Layout;
 
@@ -11,7 +12,7 @@ const HeaderBar = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const token = localStorage.getItem('token');
+  const token = getCookieToken();
   const userName = localStorage.getItem('userFullName');
 
   const handleLogout = () => {

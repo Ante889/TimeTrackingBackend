@@ -1,13 +1,15 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import {
   DesktopOutlined,
   AppstoreAddOutlined,
-  PieChartOutlined,
+  PictureOutlined,
   UserAddOutlined,
   UserOutlined
 } from '@ant-design/icons';
+import { getCookieToken } from '../service/cookieService';
 
 const { Sider } = Layout;
 
@@ -34,7 +36,7 @@ const protectedItems = [
 ];
 
 const publicItems = [
-  getItem('Dashboard', '1', <PieChartOutlined />, '/dashboard'),
+  getItem('Sql graph', '1', <PictureOutlined />, '/base-image'),
   getItem('Projects', '2', <AppstoreAddOutlined />, '/projects'),
   getItem('Swagger', '3', <DesktopOutlined />, 'https://antefilipovic-001-site1.ftempurl.com/swagger/index.html')
 ];
@@ -42,8 +44,8 @@ const publicItems = [
 const Sidebar = ({ collapsed, setCollapsed }) => {
   const location = useLocation();
   const currentPath = location.pathname;
-
-  const token = localStorage.getItem('token');
+  const cookies = new Cookies();
+  const token = getCookieToken();
   const menuItems = token ? publicItems : protectedItems;
 
   return (

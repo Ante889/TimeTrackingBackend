@@ -1,4 +1,6 @@
 import apiClient from '../api/api';
+import Cookies from 'universal-cookie';
+import { removeCookieToken, setCookieToken } from './cookieService';
 
 export const loginUser = async (email, password, navigate) => {
   try {
@@ -9,10 +11,10 @@ export const loginUser = async (email, password, navigate) => {
     });
     
     if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
+      setCookieToken( response.data.token);
       localStorage.setItem('userId', response.data.id);
       localStorage.setItem('userFullName', response.data.firstName + ' ' + response.data.lastName);
-      navigate('/dashboard');
+      navigate('/base-image');
     }
     return response.data;
   } catch (error) {
@@ -32,8 +34,7 @@ export const registerUser = async (email, password, confirmPassword, firstName, 
     });
     
     if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
+      await loginUser(email, password, navigate);
     }
     return response.data;
   } catch (error) {
@@ -42,7 +43,7 @@ export const registerUser = async (email, password, confirmPassword, firstName, 
 };
 
 export const logoutUser = (navigate) => {
-   localStorage.removeItem('token');
+   removeCookieToken();
    localStorage.removeItem('userFullName');
    localStorage.removeItem('userId');
    navigate('/login');

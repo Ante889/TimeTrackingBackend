@@ -92,22 +92,27 @@ const Projects = () => {
           <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
             {Array.isArray(projects) && projects.length > 0 ? (
               projects.map((project) => (
-                <Col key={project.id} xs={24} sm={12} md={8}>
+                <Col key={project.project.id} xs={24} sm={12} md={8}>
                   <Card
-                    title={project.name}
+                    title={project.project.name}
                     bordered={false}
                     style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}
                   >
-                    <p>{project.description.length > 150 ? `${project.description.slice(0, 150)}...` : project.description}</p>
+                    <div style={{display: 'flex', justifyContent:'space-between'}}>
+                      <p style={{color:'green'}}>Total paid = {project.totalAmountPaid}</p>
+                      <p style={{color:'red'}}>Total not paid = {project.totalAmountUnpaid}</p>
+                    </div>
+                    <hr />
+                    <p>{project.project.description.length > 150 ? `${project.project.description.slice(0, 150)}...` : project.project.description}</p>
                     <Button
                       type="default"
                       style={{ width: '100%', marginBottom: '10px' }}
-                      onClick={() => navigate(`/project-detail/${project.id}`)}
+                      onClick={() => navigate(`/project-detail/${project.project.id}`)}
                     >
                       Choice project
                     </Button>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Button type="primary" style={{ flex: 1, marginRight: '8px' }} onClick={() => handleOpenModal(project)}>Edit</Button>
+                      <Button type="primary" style={{ flex: 1, marginRight: '8px' }} onClick={() => handleOpenModal(project.project)}>Edit</Button>
                       <Button danger type="primary" style={{ flex: 1 }} onClick={() => { setProjectToDelete(project); setIsDeleteModalOpen(true); }}>Delete</Button>
                     </div>
                   </Card>

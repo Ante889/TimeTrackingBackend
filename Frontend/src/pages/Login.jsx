@@ -20,6 +20,7 @@ const Login = () => {
       await loginUser(values.email, values.password, navigate);
       message.success('Login successful');
     } catch (error) {
+      console.log(error)
       message.error('Login failed, please try again');
     } finally {
       setLoading(false);

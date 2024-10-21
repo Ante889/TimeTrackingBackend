@@ -35,7 +35,7 @@ const App = () => {
               }
             /> 
             <Route
-              path="/dashboard"
+              path="/base-image"
               element={
                 <ProtectedRoute><Dashboard /></ProtectedRoute>
               }

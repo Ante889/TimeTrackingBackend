@@ -10,6 +10,20 @@ export const getPhaseById = async (phaseId, navigate) => {
   }
 };
 
+
+export const exportPhase = async (phaseId, navigate) => {
+  try {
+    const api = apiClient(navigate);
+    const response = await api.get(`/phase/generate/pdf/${phaseId}`, {
+      responseType: 'blob' 
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export const updatePhase = async (phaseId, updatedData, navigate) => {
   try {
     const api = apiClient(navigate);

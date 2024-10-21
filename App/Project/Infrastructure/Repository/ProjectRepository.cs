@@ -3,6 +3,7 @@ using TimeTracking.App.Project.Domain.Interface;
 using TimeTracking.App.Project.Domain.Entity;
 using TimeTracking.App.Base;
 using TimeTracking.App.Person.Domain.Entity;
+using TimeTracking.App.Phase.Domain.Entity;
 
 namespace TimeTracking.App.Project.Infrastructure.Repository;
 public class ProjectRepository : ProjectRepositoryInterface
@@ -26,12 +27,21 @@ public class ProjectRepository : ProjectRepositoryInterface
         return await _projects.FindAsync(id);
     }
 
-    public async Task<IEnumerable<ProjectEntity>> GetByPersonAsync(PersonEntity person)
+    public async Task<IEnumerable<object>> GetByPersonAsync(PersonEntity person)
     {
-        return await _projects
-            .Where(p => p.UserCreated == person.Id)
+        return await (from p in _projects
+            where p.UserCreated == person.Id
+            join ph in _context.Set<PhaseEntity>() on p.Id equals ph.Project into phases
+            select new
+            {
+                Project = p,
+                TotalAmountPaid = phases.Sum(ph => ph.AmountPaid ?? 0), 
+                TotalAmountUnpaid = phases.Sum(ph => (ph.AmountPaid == null ? 0 : ph.AmountPaid.Value))
+            })
             .ToListAsync();
     }
+
+
 
     public async Task AddAsync(ProjectEntity project)
     {

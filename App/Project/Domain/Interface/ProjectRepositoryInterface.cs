@@ -7,7 +7,7 @@ namespace TimeTracking.App.Project.Domain.Interface
     {
         Task<IEnumerable<ProjectEntity>> GetAllAsync();
         Task<ProjectEntity?> GetByIdAsync(int id);
-        Task<IEnumerable<ProjectEntity>> GetByPersonAsync(PersonEntity person);
+        Task<IEnumerable<object>> GetByPersonAsync(PersonEntity person);
         Task AddAsync(ProjectEntity project);
         Task UpdateAsync(ProjectEntity project);
         Task DeleteAsync(int id);

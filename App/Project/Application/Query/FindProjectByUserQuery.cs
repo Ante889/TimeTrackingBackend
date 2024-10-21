@@ -4,7 +4,7 @@ using TimeTracking.App.Project.Domain.Entity;
 
 namespace TimeTracking.App.Project.Application.Query
 {
-    public class FindProjectByUserQuery : IRequest<IEnumerable<ProjectEntity>>
+    public class FindProjectByUserQuery : IRequest<IEnumerable<Object>>
     {
         public PersonEntity Person { get; }
 

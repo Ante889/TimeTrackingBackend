@@ -10,9 +10,9 @@ const Dashboard = () => {
   } = theme.useToken();
 
   const breadcrumbItems = [
-    { label: 'Dashboard', route: '/dashboard' }
+    { label: 'Dashboard', route: '/base-image' }
   ];
-console.log(localStorage.getItem('userId'))
+
   return (
     <Content style={{ margin: '0 16px' }}>
       <Breadcrumbs items={breadcrumbItems} />
@@ -24,7 +24,15 @@ console.log(localStorage.getItem('userId'))
           borderRadius: borderRadiusLG,
         }}
       >
-        Ovdje će ići grafovi
+        <img 
+          src="/Capture.PNG"
+          alt="Image sql"
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+            borderRadius: borderRadiusLG,
+          }} 
+        />
       </div>
     </Content>
   );

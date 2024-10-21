@@ -4,7 +4,7 @@ using TimeTracking.App.Project.Domain.Entity;
 
 namespace TimeTracking.App.Project.Application.Query
 {
-    public class FindProjectByUserQueryHandler : IRequestHandler<FindProjectByUserQuery, IEnumerable<ProjectEntity>>
+    public class FindProjectByUserQueryHandler : IRequestHandler<FindProjectByUserQuery, IEnumerable<Object>>
     {
         private readonly ProjectRepositoryInterface _projectRepository;
 
@@ -13,7 +13,7 @@ namespace TimeTracking.App.Project.Application.Query
             _projectRepository = projectRepository;
         }
 
-        public async Task<IEnumerable<ProjectEntity>> Handle(FindProjectByUserQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Object>> Handle(FindProjectByUserQuery request, CancellationToken cancellationToken)
         {
             return await _projectRepository.GetByPersonAsync(request.Person);          
         }
